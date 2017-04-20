@@ -1,0 +1,541 @@
+
+LCD Zegar czasu dzialania.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000002e2  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000026  00800060  000002e2  00000356  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000037c  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000003ac  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000098  00000000  00000000  000003e8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000800  00000000  00000000  00000480  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000347  00000000  00000000  00000c80  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000057d  00000000  00000000  00000fc7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000114  00000000  00000000  00001544  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000298  00000000  00000000  00001658  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000036d  00000000  00000000  000018f0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 000000a8  00000000  00000000  00001c5d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e2 ee       	ldi	r30, 0xE2	; 226
+  68:	f2 e0       	ldi	r31, 0x02	; 2
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	a6 38       	cpi	r26, 0x86	; 134
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 4d 01 	call	0x29a	; 0x29a <main>
+  7a:	0c 94 6f 01 	jmp	0x2de	; 0x2de <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <_LCD_OutNibble>:
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  82:	80 ff       	sbrs	r24, 0
+  84:	02 c0       	rjmp	.+4      	; 0x8a <_LCD_OutNibble+0x8>
+  86:	94 9a       	sbi	0x12, 4	; 18
+  88:	01 c0       	rjmp	.+2      	; 0x8c <_LCD_OutNibble+0xa>
+  8a:	94 98       	cbi	0x12, 4	; 18
+  8c:	81 ff       	sbrs	r24, 1
+  8e:	02 c0       	rjmp	.+4      	; 0x94 <_LCD_OutNibble+0x12>
+  90:	95 9a       	sbi	0x12, 5	; 18
+  92:	01 c0       	rjmp	.+2      	; 0x96 <_LCD_OutNibble+0x14>
+  94:	95 98       	cbi	0x12, 5	; 18
+  96:	82 ff       	sbrs	r24, 2
+  98:	02 c0       	rjmp	.+4      	; 0x9e <_LCD_OutNibble+0x1c>
+  9a:	96 9a       	sbi	0x12, 6	; 18
+  9c:	01 c0       	rjmp	.+2      	; 0xa0 <_LCD_OutNibble+0x1e>
+  9e:	96 98       	cbi	0x12, 6	; 18
+  a0:	83 ff       	sbrs	r24, 3
+  a2:	02 c0       	rjmp	.+4      	; 0xa8 <_LCD_OutNibble+0x26>
+  a4:	97 9a       	sbi	0x12, 7	; 18
+  a6:	08 95       	ret
+  a8:	97 98       	cbi	0x12, 7	; 18
+  aa:	08 95       	ret
+
+000000ac <_LCD_Write>:
+  ac:	cf 93       	push	r28
+  ae:	c8 2f       	mov	r28, r24
+  b0:	c1 9a       	sbi	0x18, 1	; 24
+  b2:	82 95       	swap	r24
+  b4:	8f 70       	andi	r24, 0x0F	; 15
+  b6:	0e 94 41 00 	call	0x82	; 0x82 <_LCD_OutNibble>
+  ba:	c1 98       	cbi	0x18, 1	; 24
+  bc:	c1 9a       	sbi	0x18, 1	; 24
+  be:	8c 2f       	mov	r24, r28
+  c0:	0e 94 41 00 	call	0x82	; 0x82 <_LCD_OutNibble>
+  c4:	c1 98       	cbi	0x18, 1	; 24
+  c6:	80 e1       	ldi	r24, 0x10	; 16
+  c8:	8a 95       	dec	r24
+  ca:	f1 f7       	brne	.-4      	; 0xc8 <_LCD_Write+0x1c>
+  cc:	00 c0       	rjmp	.+0      	; 0xce <_LCD_Write+0x22>
+  ce:	cf 91       	pop	r28
+  d0:	08 95       	ret
+
+000000d2 <LCD_WriteCommand>:
+  d2:	c2 98       	cbi	0x18, 2	; 24
+  d4:	0e 94 56 00 	call	0xac	; 0xac <_LCD_Write>
+  d8:	08 95       	ret
+
+000000da <LCD_WriteData>:
+  da:	c2 9a       	sbi	0x18, 2	; 24
+  dc:	0e 94 56 00 	call	0xac	; 0xac <_LCD_Write>
+  e0:	08 95       	ret
+
+000000e2 <LCD_WriteText>:
+  e2:	cf 93       	push	r28
+  e4:	df 93       	push	r29
+  e6:	ec 01       	movw	r28, r24
+  e8:	88 81       	ld	r24, Y
+  ea:	88 23       	and	r24, r24
+  ec:	31 f0       	breq	.+12     	; 0xfa <LCD_WriteText+0x18>
+  ee:	21 96       	adiw	r28, 0x01	; 1
+  f0:	0e 94 6d 00 	call	0xda	; 0xda <LCD_WriteData>
+  f4:	89 91       	ld	r24, Y+
+  f6:	81 11       	cpse	r24, r1
+  f8:	fb cf       	rjmp	.-10     	; 0xf0 <LCD_WriteText+0xe>
+  fa:	df 91       	pop	r29
+  fc:	cf 91       	pop	r28
+  fe:	08 95       	ret
+
+00000100 <LCD_GoTo>:
+ 100:	90 e4       	ldi	r25, 0x40	; 64
+ 102:	69 9f       	mul	r22, r25
+ 104:	80 0d       	add	r24, r0
+ 106:	11 24       	eor	r1, r1
+ 108:	80 68       	ori	r24, 0x80	; 128
+ 10a:	0e 94 69 00 	call	0xd2	; 0xd2 <LCD_WriteCommand>
+ 10e:	08 95       	ret
+
+00000110 <LCD_Clear>:
+ 110:	81 e0       	ldi	r24, 0x01	; 1
+ 112:	0e 94 69 00 	call	0xd2	; 0xd2 <LCD_WriteCommand>
+ 116:	83 ef       	ldi	r24, 0xF3	; 243
+ 118:	91 e0       	ldi	r25, 0x01	; 1
+ 11a:	01 97       	sbiw	r24, 0x01	; 1
+ 11c:	f1 f7       	brne	.-4      	; 0x11a <LCD_Clear+0xa>
+ 11e:	00 c0       	rjmp	.+0      	; 0x120 <LCD_Clear+0x10>
+ 120:	00 00       	nop
+ 122:	08 95       	ret
+
+00000124 <LCD_Initalize>:
+//
+// Procedura inicjalizacji kontrolera HD44780.
+//
+//-------------------------------------------------------------------------------------------------
+void LCD_Initalize(void)
+{
+ 124:	cf 93       	push	r28
+unsigned char i;
+LCD_DB4_DIR |= LCD_DB4; // Konfiguracja kierunku pracy wyprowadzeñ
+ 126:	8c 9a       	sbi	0x11, 4	; 17
+LCD_DB5_DIR |= LCD_DB5; //
+ 128:	8d 9a       	sbi	0x11, 5	; 17
+LCD_DB6_DIR |= LCD_DB6; //
+ 12a:	8e 9a       	sbi	0x11, 6	; 17
+LCD_DB7_DIR |= LCD_DB7; //
+ 12c:	8f 9a       	sbi	0x11, 7	; 17
+LCD_E_DIR 	|= LCD_E;   //
+ 12e:	b9 9a       	sbi	0x17, 1	; 23
+LCD_RS_DIR 	|= LCD_RS;  //
+ 130:	ba 9a       	sbi	0x17, 2	; 23
+ 132:	85 ea       	ldi	r24, 0xA5	; 165
+ 134:	9e e0       	ldi	r25, 0x0E	; 14
+ 136:	01 97       	sbiw	r24, 0x01	; 1
+ 138:	f1 f7       	brne	.-4      	; 0x136 <LCD_Initalize+0x12>
+ 13a:	00 c0       	rjmp	.+0      	; 0x13c <LCD_Initalize+0x18>
+ 13c:	00 00       	nop
+_delay_ms(15); // oczekiwanie na ustalibizowanie siê napiecia zasilajacego
+LCD_RS_PORT &= ~LCD_RS; // wyzerowanie linii RS
+ 13e:	c2 98       	cbi	0x18, 2	; 24
+LCD_E_PORT &= ~LCD_E;  // wyzerowanie linii E
+ 140:	c1 98       	cbi	0x18, 1	; 24
+ 142:	c3 e0       	ldi	r28, 0x03	; 3
+
+for(i = 0; i < 3; i++) // trzykrotne powtórzenie bloku instrukcji
+  {
+  LCD_E_PORT |= LCD_E; //  E = 1
+ 144:	c1 9a       	sbi	0x18, 1	; 24
+  _LCD_OutNibble(0x03); // tryb 8-bitowy
+ 146:	83 e0       	ldi	r24, 0x03	; 3
+ 148:	0e 94 41 00 	call	0x82	; 0x82 <_LCD_OutNibble>
+  LCD_E_PORT &= ~LCD_E; // E = 0
+ 14c:	c1 98       	cbi	0x18, 1	; 24
+ 14e:	81 ee       	ldi	r24, 0xE1	; 225
+ 150:	94 e0       	ldi	r25, 0x04	; 4
+ 152:	01 97       	sbiw	r24, 0x01	; 1
+ 154:	f1 f7       	brne	.-4      	; 0x152 <LCD_Initalize+0x2e>
+ 156:	00 c0       	rjmp	.+0      	; 0x158 <LCD_Initalize+0x34>
+ 158:	00 00       	nop
+ 15a:	c1 50       	subi	r28, 0x01	; 1
+LCD_RS_DIR 	|= LCD_RS;  //
+_delay_ms(15); // oczekiwanie na ustalibizowanie siê napiecia zasilajacego
+LCD_RS_PORT &= ~LCD_RS; // wyzerowanie linii RS
+LCD_E_PORT &= ~LCD_E;  // wyzerowanie linii E
+
+for(i = 0; i < 3; i++) // trzykrotne powtórzenie bloku instrukcji
+ 15c:	99 f7       	brne	.-26     	; 0x144 <LCD_Initalize+0x20>
+  _LCD_OutNibble(0x03); // tryb 8-bitowy
+  LCD_E_PORT &= ~LCD_E; // E = 0
+  _delay_ms(5); // czekaj 5ms
+  }
+
+LCD_E_PORT |= LCD_E; // E = 1
+ 15e:	c1 9a       	sbi	0x18, 1	; 24
+_LCD_OutNibble(0x02); // tryb 4-bitowy
+ 160:	82 e0       	ldi	r24, 0x02	; 2
+ 162:	0e 94 41 00 	call	0x82	; 0x82 <_LCD_OutNibble>
+LCD_E_PORT &= ~LCD_E; // E = 0
+ 166:	c1 98       	cbi	0x18, 1	; 24
+ 168:	89 ef       	ldi	r24, 0xF9	; 249
+ 16a:	90 e0       	ldi	r25, 0x00	; 0
+ 16c:	01 97       	sbiw	r24, 0x01	; 1
+ 16e:	f1 f7       	brne	.-4      	; 0x16c <LCD_Initalize+0x48>
+ 170:	00 c0       	rjmp	.+0      	; 0x172 <LCD_Initalize+0x4e>
+ 172:	00 00       	nop
+
+_delay_ms(1); // czekaj 1ms 
+LCD_WriteCommand(HD44780_FUNCTION_SET | HD44780_FONT5x7 | HD44780_TWO_LINE | HD44780_4_BIT); // interfejs 4-bity, 2-linie, znak 5x7
+ 174:	88 e2       	ldi	r24, 0x28	; 40
+ 176:	0e 94 69 00 	call	0xd2	; 0xd2 <LCD_WriteCommand>
+LCD_WriteCommand(HD44780_DISPLAY_ONOFF | HD44780_DISPLAY_OFF); // wy³¹czenie wyswietlacza
+ 17a:	88 e0       	ldi	r24, 0x08	; 8
+ 17c:	0e 94 69 00 	call	0xd2	; 0xd2 <LCD_WriteCommand>
+LCD_WriteCommand(HD44780_CLEAR); // czyszczenie zawartosæi pamieci DDRAM
+ 180:	81 e0       	ldi	r24, 0x01	; 1
+ 182:	0e 94 69 00 	call	0xd2	; 0xd2 <LCD_WriteCommand>
+ 186:	83 ef       	ldi	r24, 0xF3	; 243
+ 188:	91 e0       	ldi	r25, 0x01	; 1
+ 18a:	01 97       	sbiw	r24, 0x01	; 1
+ 18c:	f1 f7       	brne	.-4      	; 0x18a <LCD_Initalize+0x66>
+ 18e:	00 c0       	rjmp	.+0      	; 0x190 <LCD_Initalize+0x6c>
+ 190:	00 00       	nop
+_delay_ms(2);
+LCD_WriteCommand(HD44780_ENTRY_MODE | HD44780_EM_SHIFT_CURSOR | HD44780_EM_INCREMENT);// inkrementaja adresu i przesuwanie kursora
+ 192:	86 e0       	ldi	r24, 0x06	; 6
+ 194:	0e 94 69 00 	call	0xd2	; 0xd2 <LCD_WriteCommand>
+LCD_WriteCommand(HD44780_DISPLAY_ONOFF | HD44780_DISPLAY_ON | HD44780_CURSOR_OFF | HD44780_CURSOR_NOBLINK); // w³¹cz LCD, bez kursora i mrugania
+ 198:	8c e0       	ldi	r24, 0x0C	; 12
+ 19a:	0e 94 69 00 	call	0xd2	; 0xd2 <LCD_WriteCommand>
+}
+ 19e:	cf 91       	pop	r28
+ 1a0:	08 95       	ret
+
+000001a2 <Increase>:
+
+void Increase(int pos)
+{
+	if((pos != 2) || (pos != 5)) // nie licz dla ":"
+	{
+		if((pos == 1) || (pos == 4) || (pos == 7))
+ 1a2:	81 30       	cpi	r24, 0x01	; 1
+ 1a4:	91 05       	cpc	r25, r1
+ 1a6:	09 f4       	brne	.+2      	; 0x1aa <Increase+0x8>
+ 1a8:	61 c0       	rjmp	.+194    	; 0x26c <Increase+0xca>
+ 1aa:	84 30       	cpi	r24, 0x04	; 4
+ 1ac:	91 05       	cpc	r25, r1
+ 1ae:	09 f4       	brne	.+2      	; 0x1b2 <Increase+0x10>
+ 1b0:	5d c0       	rjmp	.+186    	; 0x26c <Increase+0xca>
+ 1b2:	87 30       	cpi	r24, 0x07	; 7
+ 1b4:	91 05       	cpc	r25, r1
+ 1b6:	c1 f4       	brne	.+48     	; 0x1e8 <Increase+0x46>
+ 1b8:	59 c0       	rjmp	.+178    	; 0x26c <Increase+0xca>
+		{
+			for(int i = 0; i < 10; i++)
+			{
+				if(i < 9)
+				{
+					if(hour[pos] == numbers[i])
+ 1ba:	41 91       	ld	r20, Z+
+ 1bc:	45 13       	cpse	r20, r21
+ 1be:	0e c0       	rjmp	.+28     	; 0x1dc <Increase+0x3a>
+ 1c0:	02 c0       	rjmp	.+4      	; 0x1c6 <Increase+0x24>
+ 1c2:	20 e0       	ldi	r18, 0x00	; 0
+ 1c4:	30 e0       	ldi	r19, 0x00	; 0
+					{
+						hour[pos] = numbers[i + 1];
+ 1c6:	f9 01       	movw	r30, r18
+ 1c8:	ee 59       	subi	r30, 0x9E	; 158
+ 1ca:	ff 4f       	sbci	r31, 0xFF	; 255
+ 1cc:	81 81       	ldd	r24, Z+1	; 0x01
+ 1ce:	8c 93       	st	X, r24
+						break;
+ 1d0:	08 95       	ret
+					}
+				}
+				else // zwiêkszenie po dziewiatce
+				{
+					hour[pos] = numbers[0];
+ 1d2:	6c 93       	st	X, r22
+					Increase(pos - 1);
+ 1d4:	01 97       	sbiw	r24, 0x01	; 1
+ 1d6:	0e 94 d1 00 	call	0x1a2	; 0x1a2 <Increase>
+					break;
+ 1da:	08 95       	ret
+{
+	if((pos != 2) || (pos != 5)) // nie licz dla ":"
+	{
+		if((pos == 1) || (pos == 4) || (pos == 7))
+		{
+			for(int i = 0; i < 10; i++)
+ 1dc:	2f 5f       	subi	r18, 0xFF	; 255
+ 1de:	3f 4f       	sbci	r19, 0xFF	; 255
+			{
+				if(i < 9)
+ 1e0:	29 30       	cpi	r18, 0x09	; 9
+ 1e2:	31 05       	cpc	r19, r1
+ 1e4:	51 f7       	brne	.-44     	; 0x1ba <Increase+0x18>
+ 1e6:	f5 cf       	rjmp	.-22     	; 0x1d2 <Increase+0x30>
+					Increase(pos - 1);
+					break;
+				}
+			}
+		}
+		else if(pos == 0)
+ 1e8:	00 97       	sbiw	r24, 0x00	; 0
+ 1ea:	81 f0       	breq	.+32     	; 0x20c <Increase+0x6a>
+		{
+			for(int i = 0; i < 6; i++)
+			{
+				if(i < 5)
+				{
+					if(hour[pos] == numbers[i])
+ 1ec:	e0 91 60 00 	lds	r30, 0x0060
+ 1f0:	f0 91 61 00 	lds	r31, 0x0061
+ 1f4:	e8 0f       	add	r30, r24
+ 1f6:	f9 1f       	adc	r31, r25
+ 1f8:	40 81       	ld	r20, Z
+ 1fa:	60 91 62 00 	lds	r22, 0x0062
+ 1fe:	46 17       	cp	r20, r22
+ 200:	09 f1       	breq	.+66     	; 0x244 <Increase+0xa2>
+ 202:	a3 e6       	ldi	r26, 0x63	; 99
+ 204:	b0 e0       	ldi	r27, 0x00	; 0
+				}
+			}
+		}
+		else
+		{
+			for(int i = 0; i < 6; i++)
+ 206:	21 e0       	ldi	r18, 0x01	; 1
+ 208:	30 e0       	ldi	r19, 0x00	; 0
+ 20a:	18 c0       	rjmp	.+48     	; 0x23c <Increase+0x9a>
+		{
+			for(int i = 0; i < 2; i++)
+			{
+				if(i < 9)
+				{
+					if(hour[pos] == numbers[i])
+ 20c:	e0 91 60 00 	lds	r30, 0x0060
+ 210:	f0 91 61 00 	lds	r31, 0x0061
+ 214:	80 81       	ld	r24, Z
+ 216:	90 91 62 00 	lds	r25, 0x0062
+ 21a:	89 17       	cp	r24, r25
+ 21c:	39 f0       	breq	.+14     	; 0x22c <Increase+0x8a>
+ 21e:	90 91 63 00 	lds	r25, 0x0063
+ 222:	98 13       	cpse	r25, r24
+ 224:	34 c0       	rjmp	.+104    	; 0x28e <Increase+0xec>
+ 226:	a1 e0       	ldi	r26, 0x01	; 1
+ 228:	b0 e0       	ldi	r27, 0x00	; 0
+ 22a:	02 c0       	rjmp	.+4      	; 0x230 <Increase+0x8e>
+ 22c:	a0 e0       	ldi	r26, 0x00	; 0
+ 22e:	b0 e0       	ldi	r27, 0x00	; 0
+					{
+						hour[pos] = numbers[i + 1];
+ 230:	ae 59       	subi	r26, 0x9E	; 158
+ 232:	bf 4f       	sbci	r27, 0xFF	; 255
+ 234:	11 96       	adiw	r26, 0x01	; 1
+ 236:	8c 91       	ld	r24, X
+ 238:	80 83       	st	Z, r24
+						break;
+ 23a:	08 95       	ret
+		{
+			for(int i = 0; i < 6; i++)
+			{
+				if(i < 5)
+				{
+					if(hour[pos] == numbers[i])
+ 23c:	5d 91       	ld	r21, X+
+ 23e:	54 13       	cpse	r21, r20
+ 240:	0f c0       	rjmp	.+30     	; 0x260 <Increase+0xbe>
+ 242:	02 c0       	rjmp	.+4      	; 0x248 <Increase+0xa6>
+ 244:	20 e0       	ldi	r18, 0x00	; 0
+ 246:	30 e0       	ldi	r19, 0x00	; 0
+					{
+						hour[pos] = numbers[i + 1];
+ 248:	d9 01       	movw	r26, r18
+ 24a:	ae 59       	subi	r26, 0x9E	; 158
+ 24c:	bf 4f       	sbci	r27, 0xFF	; 255
+ 24e:	11 96       	adiw	r26, 0x01	; 1
+ 250:	8c 91       	ld	r24, X
+ 252:	80 83       	st	Z, r24
+						break;
+ 254:	08 95       	ret
+					}
+				}
+				else // zwiêkszenie po dziewiatce
+				{
+					hour[pos] = numbers[0];
+ 256:	60 83       	st	Z, r22
+					Increase(pos - 2);
+ 258:	02 97       	sbiw	r24, 0x02	; 2
+ 25a:	0e 94 d1 00 	call	0x1a2	; 0x1a2 <Increase>
+					break;
+ 25e:	08 95       	ret
+				}
+			}
+		}
+		else
+		{
+			for(int i = 0; i < 6; i++)
+ 260:	2f 5f       	subi	r18, 0xFF	; 255
+ 262:	3f 4f       	sbci	r19, 0xFF	; 255
+			{
+				if(i < 5)
+ 264:	25 30       	cpi	r18, 0x05	; 5
+ 266:	31 05       	cpc	r19, r1
+ 268:	49 f7       	brne	.-46     	; 0x23c <Increase+0x9a>
+ 26a:	f5 cf       	rjmp	.-22     	; 0x256 <Increase+0xb4>
+		{
+			for(int i = 0; i < 10; i++)
+			{
+				if(i < 9)
+				{
+					if(hour[pos] == numbers[i])
+ 26c:	a0 91 60 00 	lds	r26, 0x0060
+ 270:	b0 91 61 00 	lds	r27, 0x0061
+ 274:	a8 0f       	add	r26, r24
+ 276:	b9 1f       	adc	r27, r25
+ 278:	5c 91       	ld	r21, X
+ 27a:	60 91 62 00 	lds	r22, 0x0062
+ 27e:	56 17       	cp	r21, r22
+ 280:	09 f4       	brne	.+2      	; 0x284 <Increase+0xe2>
+ 282:	9f cf       	rjmp	.-194    	; 0x1c2 <Increase+0x20>
+ 284:	e3 e6       	ldi	r30, 0x63	; 99
+ 286:	f0 e0       	ldi	r31, 0x00	; 0
+{
+	if((pos != 2) || (pos != 5)) // nie licz dla ":"
+	{
+		if((pos == 1) || (pos == 4) || (pos == 7))
+		{
+			for(int i = 0; i < 10; i++)
+ 288:	21 e0       	ldi	r18, 0x01	; 1
+ 28a:	30 e0       	ldi	r19, 0x00	; 0
+ 28c:	96 cf       	rjmp	.-212    	; 0x1ba <Increase+0x18>
+ 28e:	08 95       	ret
+
+00000290 <AddSecond>:
+	}
+}
+
+void AddSecond()
+{
+	Increase(7);
+ 290:	87 e0       	ldi	r24, 0x07	; 7
+ 292:	90 e0       	ldi	r25, 0x00	; 0
+ 294:	0e 94 d1 00 	call	0x1a2	; 0x1a2 <Increase>
+ 298:	08 95       	ret
+
+0000029a <main>:
+}
+
+int main(void)
+{
+    LCD_Initalize(); // Inicjalizacja ekranu oraz bblioteki
+ 29a:	0e 94 92 00 	call	0x124	; 0x124 <LCD_Initalize>
+	
+	while(1)
+	{
+		LCD_Clear();
+ 29e:	0e 94 88 00 	call	0x110	; 0x110 <LCD_Clear>
+		
+		LCD_GoTo(0, 0); // Ustawienie sie na pozycji x = 0, y = 0
+ 2a2:	60 e0       	ldi	r22, 0x00	; 0
+ 2a4:	80 e0       	ldi	r24, 0x00	; 0
+ 2a6:	0e 94 80 00 	call	0x100	; 0x100 <LCD_GoTo>
+		LCD_WriteText("Czas dzialania:"); // Pierwsza linijka tekstu
+ 2aa:	8c e6       	ldi	r24, 0x6C	; 108
+ 2ac:	90 e0       	ldi	r25, 0x00	; 0
+ 2ae:	0e 94 71 00 	call	0xe2	; 0xe2 <LCD_WriteText>
+		
+		LCD_GoTo(0, 1);
+ 2b2:	61 e0       	ldi	r22, 0x01	; 1
+ 2b4:	80 e0       	ldi	r24, 0x00	; 0
+ 2b6:	0e 94 80 00 	call	0x100	; 0x100 <LCD_GoTo>
+		LCD_WriteText(hour);
+ 2ba:	80 91 60 00 	lds	r24, 0x0060
+ 2be:	90 91 61 00 	lds	r25, 0x0061
+ 2c2:	0e 94 71 00 	call	0xe2	; 0xe2 <LCD_WriteText>
+		
+		AddSecond();
+ 2c6:	0e 94 48 01 	call	0x290	; 0x290 <AddSecond>
+ 2ca:	2f ef       	ldi	r18, 0xFF	; 255
+ 2cc:	8f e1       	ldi	r24, 0x1F	; 31
+ 2ce:	93 e0       	ldi	r25, 0x03	; 3
+ 2d0:	21 50       	subi	r18, 0x01	; 1
+ 2d2:	80 40       	sbci	r24, 0x00	; 0
+ 2d4:	90 40       	sbci	r25, 0x00	; 0
+ 2d6:	e1 f7       	brne	.-8      	; 0x2d0 <main+0x36>
+ 2d8:	00 c0       	rjmp	.+0      	; 0x2da <main+0x40>
+ 2da:	00 00       	nop
+ 2dc:	e0 cf       	rjmp	.-64     	; 0x29e <main+0x4>
+
+000002de <_exit>:
+ 2de:	f8 94       	cli
+
+000002e0 <__stop_program>:
+ 2e0:	ff cf       	rjmp	.-2      	; 0x2e0 <__stop_program>

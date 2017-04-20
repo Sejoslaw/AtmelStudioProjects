@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "4Lampki_StartPB0", "4Lampki_StartPB0\4Lampki_StartPB0.cppproj", "{BCEEE746-9337-4F92-B3E1-7BF723DB2C15}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCEEE746-9337-4F92-B3E1-7BF723DB2C15}.Debug|AVR.ActiveCfg = Debug|AVR
+		{BCEEE746-9337-4F92-B3E1-7BF723DB2C15}.Debug|AVR.Build.0 = Debug|AVR
+		{BCEEE746-9337-4F92-B3E1-7BF723DB2C15}.Release|AVR.ActiveCfg = Release|AVR
+		{BCEEE746-9337-4F92-B3E1-7BF723DB2C15}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
